@@ -10,12 +10,19 @@ namespace app\api\model;
 
 
 use think\Db;
-use think\Exception;
+use think\Model;
 
-class Banner {
-    public static function getBannerById($id){
-        //todo:根据banner id获取banner信息
-        $result  = Db::query('select * from banner_item where banner_id=?',[$id]);
-        return $result;
-    }
+class Banner extends Model {
+//    public static function getBannerById($id){
+//        //todo:根据banner id获取banner信息
+////        $result  = Db::query('select * from banner_item where banner_id=?',[$id]);
+////        $result = Db::table('banner_item')->where('banner_id','=',$id)
+////            ->select();
+//        $result = Db::table('banner_item')->where(
+//            function ($query) use ($id){
+//                $query->where('banner_id','=',$id);
+//            }
+//        )->select();
+//        return $result;
+//    }
 }

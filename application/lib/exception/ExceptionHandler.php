@@ -8,7 +8,6 @@
 
 namespace app\lib\exception;
 
-use Exception;
 use think\exception\Handle;
 use think\Log;
 
@@ -16,7 +15,7 @@ class ExceptionHandler extends Handle {
     private $code;
     private $msg;
     private $errcode;
-    public function render(Exception $e) {
+    public function render(\Exception $e) {
         if($e instanceof BaseException){
             $this->code = $e->code;
             $this->msg = $e->msg;
@@ -40,7 +39,7 @@ class ExceptionHandler extends Handle {
         );
         return json($result);
     }
-    private function recordErrorLog(Exception $e){
+    private function recordErrorLog(\Exception $e){
         Log::init([
             'type'=>'File',
             'path'=>LOG_PATH,
