@@ -13,6 +13,9 @@ use think\Db;
 use think\Model;
 
 class Banner extends Model {
+    //隐藏不必要属性
+    protected $hidden = ['delete_time','update_time'];
+
     public static function getBannerById($id){
 //        //todo:根据banner id获取banner信息
 ////        $result  = Db::query('select * from banner_item where banner_id=?',[$id]);
