@@ -9,10 +9,7 @@
 namespace app\api\model;
 
 
-use think\Db;
-use think\Model;
-
-class Banner extends Model {
+class Banner extends BaseModel {
     //隐藏不必要属性
     protected $hidden = ['delete_time','update_time'];
 

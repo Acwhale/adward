@@ -24,7 +24,6 @@ class Banner {
 //        $banner =BannerModel::with(['items','items.img'])->find($id);
         //隐藏属性
 //        $banner->hidden(['delete_time','update_time']);
-
         if (!$banner) {
             throw new BannerMissException();
         }

@@ -19,4 +19,6 @@ use think\Route;
 //    ],
 //
 //];
-Route::get('api/v1/banner/:id','api/v1.banner/getBanner');
+Route::get('api/:version/banner/:id','api/:version.banner/getBanner');
+Route::get('api/:version/theme','api/:version.theme/getSimpleList');
+Route::get('api/:version/theme/:id','api/:version.theme/getComplexOne');

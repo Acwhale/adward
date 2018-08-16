@@ -9,9 +9,7 @@
 namespace app\api\validate;
 
 
-use app\lib\exception\BaseException;
 use app\lib\exception\ParameterException;
-use think\Exception;
 use think\Request;
 use think\Validate;
 
@@ -34,5 +32,13 @@ class BaseValidate extends Validate {
             return true;
         }
 
+    }
+
+    protected function isPositiveInteger($value,$rule='',$data='',$filed=''){
+        if(is_numeric($value) && is_int($value+0) &&($value+0)>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
