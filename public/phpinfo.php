@@ -6,4 +6,5 @@
  * Time: 11:09
  */
 
+print_r(time());
 phpinfo();

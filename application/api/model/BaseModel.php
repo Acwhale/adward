@@ -13,6 +13,7 @@ use app\lib\enums\ImageFrom;
 use think\Model;
 
 class BaseModel extends Model {
+//    protected $autoWriteTimestamp = true;
     //获取完整图片URl
     protected function prefixUrl($value,$data){
         $finalUrl = $value;
