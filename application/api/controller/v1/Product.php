@@ -47,4 +47,18 @@ class Product {
         $product = $collection->hidden(['summary']);
         return $product;
     }
+
+    /**
+     * 获取商品详情
+     * @param $id
+     * url
+     */
+    public function getOne($id){
+        (new IDMustBePositiveInt())->goCheck();
+        $product = ProductModel::getProductDetail($id);
+        if(!$product){
+            throw  new ProductException();
+        }
+        return $product;
+    }
 }

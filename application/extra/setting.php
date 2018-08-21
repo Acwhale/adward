@@ -6,5 +6,6 @@
  * Time: 11:17
  */
 return [
-  'img_prefixs'=>'http://z.cn/images'
+  'img_prefixs'=>'http://z.cn/images',
+    'token_exprie_in'=>7200
 ];

@@ -9,12 +9,12 @@
 namespace app\api\service;
 
 
-use app\api\validate\IDMustBePositiveInt;
+use app\api\model\User as UserModel;
+use app\lib\exception\TokenException;
 use app\lib\exception\WeCharException;
 use think\Exception;
-use app\api\model\User as UserModel;
 
-class UserToken {
+class UserToken extends Token {
     protected $code;
     protected $vxAppID;
     protected $vxAppSecret;
@@ -41,7 +41,7 @@ class UserToken {
            if($loginFail){
                 $this->processLoginError($vxResult);
            }else{
-                $this->grantToken($vxResult);
+               return $this->grantToken($vxResult);
            }
        }
     }
@@ -61,6 +61,8 @@ class UserToken {
             $uid = $this->newUser($openid);
         }
         $cachedVale = $this->prepareCacheValue($vxResult,$uid);
+        $token = $this->saveToCache($cachedVale);
+        return $token;
     }
 
     /**
@@ -68,6 +70,17 @@ class UserToken {
      * @param $cachedVale
      */
     private function saveToCache($cachedVale){
+        $key = self::generateToken();
+        $value = json_encode($cachedVale);
+        $expire_in = config('setting.token_exprie_in');
+        $result = cache($key,$value,$expire_in);
+        if(!$result){
+            throw new TokenException([
+                'msg'=>'服务器缓存异常',
+                'errcode'=>10005
+            ]);
+        }
+        return $key;
     }
     /**
      * 准备缓存数据
