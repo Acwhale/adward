@@ -10,6 +10,7 @@ namespace app\api\service;
 
 
 use app\api\model\User as UserModel;
+use app\lib\enums\ScopeEnum;
 use app\lib\exception\TokenException;
 use app\lib\exception\WeCharException;
 use think\Exception;
@@ -90,7 +91,7 @@ class UserToken extends Token {
     private function prepareCacheValue($vxResult,$uid){
         $cachedValue = $vxResult;
         $cachedValue['uid'] = $uid;
-        $cachedValue['scope'] = 16;//代表用户
+        $cachedValue['scope'] = ScopeEnum::USER;//代表用户
         return $cachedValue;
     }
 
