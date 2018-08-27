@@ -14,7 +14,7 @@ use think\Exception;
 class BaseException extends Exception {
     public $code = 400;
     public $msg ='参数错误';
-    public $errcode = 10000;
+    public $errCode = 10000;
     public function __construct($params=[]) {
         if(!is_array($params)){
             return ;
