@@ -81,7 +81,7 @@ class Token {
     public static function needExclusiveScope(){
         $scope = self::getCurrentTokenVar('scope');
         if($scope){
-            if($scope == ScopeEnum::SUPER){
+            if($scope == ScopeEnum::USER){
                 return true;
             }else{
                 throw new ForbiddenException();

@@ -11,4 +11,6 @@ namespace app\api\model;
 
 class Order extends BaseModel {
     protected $hidden = ['user_id','delete_time','update_time'];
+    //自动写入时间戳
+    protected $autoWriteTimestamp = true;
 }

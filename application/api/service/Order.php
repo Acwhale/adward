@@ -101,6 +101,7 @@ class Order {
             $snap['snapName'] .= '等';
 
         }
+        return $snap;
     }
 
     /**
@@ -183,8 +184,9 @@ class Order {
         foreach ($oProducts as $item) {
             array_push($oPIDs, $item['product_id']);
         }
-        $products = Product::all($oPIDs)->
-        visible(['id', 'price', 'stock', 'name', 'main_img_url'])->toArray();
+        $products = Product::all($oPIDs);
+        $products = collection($products)->visible(['id', 'price', 'stock', 'name', 'main_img_url'])->toArray();
+
         return $products;
     }
     /**
@@ -192,7 +194,7 @@ class Order {
      * @return string
      */
     public static function makeOrderNo() {
-        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
         $orderSn =
             $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
                 'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
