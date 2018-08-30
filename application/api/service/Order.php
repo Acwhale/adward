@@ -15,6 +15,7 @@ use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
 use app\api\model\Order as OrderModel;
+use think\Db;
 use think\Exception;
 
 class Order {
@@ -24,7 +25,6 @@ class Order {
     protected $products;
     //当前用户ID
     protected $uid;
-
 
     public function place($uid, $oProducts) {
         //$oProducts 与$products做对比
@@ -48,6 +48,7 @@ class Order {
      * 创建订单
      */
     private function createOrder($snap){
+        Db::startTrans();
         try{
             $orderNo = $this->makeOrderNo();
             $order = new OrderModel();
@@ -68,12 +69,14 @@ class Order {
             }
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
+            Db::commit();
             return [
                 'order_no'=>$orderNo,
                 'create_time'=>$create_time,
                 'order_id'=>$orderID
             ];
         }catch (Exception $e){
+            Db::rollback();
             throw $e;
         }
     }
@@ -117,7 +120,14 @@ class Order {
         }
         return $userAddress->toArray();
     }
+    public function checkOrderStatus($orderID){
+        $oProducts = OrderProduct::where('order_id','=',$orderID)->select();
+        $this->oProducts = $oProducts;
+        $this->products = $this->getProductsByOrder($oProducts);
 
+        $status = $this->getOrderStatus();
+        return $status;
+    }
     /**
      * 获取订单的状态
      */
