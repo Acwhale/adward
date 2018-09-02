@@ -11,6 +11,7 @@ namespace app\api\service;
 
 use app\lib\enums\OrderStatusEnum;
 use app\lib\exception\OrderException;
+use app\lib\exception\PrepareOrderCException;
 use app\lib\exception\TokenException;
 use think\Exception;
 use app\api\service\Order as OrderService;
@@ -65,7 +66,7 @@ class Pay {
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openid);
         //微信回调通知设置
-        $wxOrderData->SetNotify_url('https://qq.com');
+        $wxOrderData->SetNotify_url(config('secure.pay_back_url'));
 
         return $this->getPaySignature($wxOrderData);
 
@@ -80,16 +81,44 @@ class Pay {
         $config = new \WxPayConfig();
         $wxOrder = \WxPayApi::unifiedOrder($config,$wxOrderData);
         if($wxOrder['return_code']!='SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
-            Log::record($wxOrder,'error');
-            Log::record('获取预支付订单失败','error');
+//            Log::record($wxOrder,'error');
+//            Log::record('获取预支付订单失败','error');
+            throw new PrepareOrderCException();
         }
         //prepay_id  推送模板消息时使用
         $this->recoredPreOrder($wxOrder);
-
-        return null;
+        $signnature = $this->sign($wxOrder);
+        return $signnature;
     }
+
+    /**
+     * 处理prepay_id
+     * @param $wxOrder
+     */
     private function recoredPreOrder($wxOrder){
         OrderModel::where('id','=',$this->orderID)->update(['prepay_id'=>$wxOrder['prepay_id']]);
+    }
+
+    /**
+     * 生成微信支付所需要的参数
+     * @param $wxOrder
+     * @throws \WxPayException
+     */
+    private function sign($wxOrder){
+        $config = new \WxPayConfig();
+        $jsApiPayData = new \WxPayJsApiPay();
+        $jsApiPayData->SetAppid(config('wx.appid'));
+        $jsApiPayData->SetTimeStamp((string)time());
+        $rand = md5(time().mt_rand(0,1000));
+        $jsApiPayData->SetNonceStr($rand);
+        $jsApiPayData->SetPackage('prepay_id='.$wxOrder['prepay_id']);
+        $jsApiPayData->SetSignType('md5');
+
+        $sign = $jsApiPayData->MakeSign($config);
+
+        $rowValues = $jsApiPayData->GetValues();
+        unset($rowValues['appId']);
+        $rowValues['paySign'] = $sign;
     }
     /**
      * 更进一步检查订单

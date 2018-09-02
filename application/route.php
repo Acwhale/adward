@@ -34,8 +34,12 @@ Route::get('api/:version/category/all','api/:version.category/getAllCategories')
 Route::post('api/:version/token/user','api/:version.token/getToken');
 Route::post('api/:version/address','api/:version.address/createOrUpdateAddress');
 Route::post('api/:version/order','api/:version.order/placeOrder');
+Route::get('apt/:version/order/by_user','api/:version.order/getSummaryByUser');
+Route::get('apt/:version/order/:id','api/:version.order/getDetail',[],['id'=>'\d+']);
 
 Route::post('api/:version/pay/pre_order','api/:version.pay/getPreOrder');
+
+Route::post('api/:version/pay/notify','api/:version.pay/receiveNotify');
 //Route::get('api/:version/before','api/:version.address/second');
 
 #路由分组

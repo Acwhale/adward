@@ -7,5 +7,6 @@
  */
 
 return [
-    'token_salt'=>'EDDFKKMMDkr'
+    'token_salt'=>'EDDFKKMMDkr',
+    'pay_back_url'=>'http://z.cn/v1/api/pay'
 ];
