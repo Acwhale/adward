@@ -1,8 +1,9 @@
 <!--page/home/home.wxml-->
-<view>
+<import src='../tpls/products/products-tpl.wxml'/> 
+<view class='container'>
   <swiper indicator-dots='true' autoplay='true' circular='true' indicator-color='#fff' class='swiper'>
     <block wx:for='{{bannerArray}}'>
-      <swiper-item class='banner-item'>
+      <swiper-item class='banner-item' data-id='{{item.key_word}}' bindtap='onProductsItemTap'>
         <image mode='aspectFill' class='item-image' src='{{item.img.url}}'></image>
       </swiper-item>
     </block>
@@ -13,16 +14,21 @@
       <view class='home-main-header'>精选主题</view>
       <view class='theme-box'>
         <block wx:for='{{theme}}'>
-          <view wx:if='{{index==2}}' class='theme-item big'>
+          <view wx:if='{{index==2}}' class='theme-item big' data-id='{{item.id}}'
+                data-name='{{item.name}}' bindtap='onThemeItemTap'>
            <image src='{{item.topic_img.url}}'></image>
           </view>
-          <view wx:else class='theme-item'>
+          <view wx:else class='theme-item' data-id='{{item.id}}' 
+                data-name='{{item.name}}' bindtap='onThemeItemTap'>
             <image src='{{item.topic_img.url}}'></image>
           </view>
          
         </block>
       </view>
     </view>
-    <view class='home-main-products'>2</view>
+    <view class='home-main-products'>
+      <view class='home-main-header'>最近新品</view>
+      <template is='products' data ='{{products:productsArr}}'></template>
+    </view>
   </view>
 </view>
