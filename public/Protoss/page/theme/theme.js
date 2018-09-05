@@ -17,8 +17,14 @@ Page({
     var [id,name] = [options.id,options.name];
     this.data.id = id;
     this.data.name = name;
-
+   
     this._loadData();
+  },
+  onReady:function(){
+      //动态设置标题
+      wx.setNavigationBarTitle({
+          title: this.data.name,
+      })
   },
   _loadData:function(){
       /**

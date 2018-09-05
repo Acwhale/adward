@@ -32,7 +32,7 @@ Page({
     });
     
     home.getProductsData((res)=>{
-      // console.log(res)
+    //   console.log(res)
       this.setData({
         'productsArr':res
       })
