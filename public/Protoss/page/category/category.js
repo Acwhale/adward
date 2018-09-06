@@ -7,7 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    currentMenuIndex:0
+    currentMenuIndex:0,
+    loadedData:{}
   },
 
   /**
@@ -37,9 +38,19 @@ Page({
            this.setData({
                categoryProducts: dataObj
            });
+           this.data.loadedData[0] = dataObj;
         });
       });
       
+  },
+  /**
+   * 当前分类下的数据是否已经加载
+   */
+  isLoadedData:function(index){
+      if (this.data.loadedData[index]){
+          return true;
+      }
+      return false;
   },
   /**
    * 标签切换
@@ -51,18 +62,37 @@ Page({
     /**
        * 获取某个标签下的商品
        */
-    category.getProductByCategory(id, (data) => {
-        var dataObj = {
-            products: data,
-            topImgUrl: this.data.categoryData[index].img.url,
-            title: this.data.categoryData[index].name
-        };
-        this.setData({
-            categoryProducts: dataObj,
-            currentMenuIndex:index
+    if(!this.data.loadedData[index]){
+        category.getProductByCategory(id, (data) => {
+            var dataObj = {
+                products: data,
+                topImgUrl: this.data.categoryData[index].img.url,
+                title: this.data.categoryData[index].name
+            };
+            this.setData({
+                categoryProducts: dataObj,
+                currentMenuIndex: index
+            });
+            this.data.loadedData[index] = dataObj;
         });
-    });
+    }else{
+        this.setData({
+            categoryProducts: this.data.loadedData[index],
+            currentMenuIndex: index
+            
+        });
+    }
     
+  },
+  /**
+   * 点击事件跳转product
+   */
+  onProductsItemTap:function(e){
+    // console.log(e);
+    let id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+        url: '../product/product?id='+id,
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
