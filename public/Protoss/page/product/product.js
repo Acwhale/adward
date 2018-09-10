@@ -1,5 +1,7 @@
 // page/product/product.js
-import {Product} from 'product-model.js'
+import {Product} from 'product-model.js';
+import {Cart} from '../cart/cart-model.js';
+var cart = new Cart();
 var product = new Product();
 Page({
 
@@ -23,9 +25,10 @@ Page({
   },
   _loadData:function(){
       product.getDetailInfo(this.data.id,(res)=>{
-        console.log(res)
+        //   console.log(cart.getCartTotalCounts())
         this.setData({
-            'product':res
+            'product':res,
+            'cartTotalCounts': cart.getCartTotalCounts()
         });
       });
   },
@@ -35,7 +38,7 @@ Page({
   bindPickerChange:function(e){
     //   console.log(e)
     this.setData({
-        'productCount': yhis.data.countsArr[e.detail.value],
+        'productCount': this.data.countsArr[e.detail.value],
     });
   },
   /**
@@ -47,6 +50,27 @@ Page({
     this.setData({
         'currentTabsIndex':index
     });
-  }
-  
+  },
+  /**
+   * 加入到购物车
+   */
+  onAddToCartTap:function(e){
+      this.addTocart();
+      var counts = this.data.cartTotalCount+this.data.productCount;
+      this.setData({
+          'cartTotalCounts': cart.getCartTotalCounts()
+      });
+  },
+  addTocart:function(){
+    let tmpObj={};
+    let keys =['id','name','main_img_url','price'];
+
+    for(let key in this.data.product){
+        if(keys.indexOf(key) >=0){
+            tmpObj[key] = this.data.product[key];
+        }
+    }
+    cart.add(tmpObj,this.data.productCount)
+  },
+
 })
