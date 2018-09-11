@@ -69,6 +69,57 @@ class Cart extends Base {
         }
         return result;
     }
+    /*
+   * 修改商品数目
+   * params:
+   * id - {int} 商品id
+   * counts -{int} 数目
+   * */
+    _changeCounts(id, counts) {
+        var cartData = this.getCartDataFromLocal(),
+            hasInfo = this._isHasThatOne(id, cartData);
+        if (hasInfo.index != -1) {
+            if (hasInfo.data.counts > 0) {
+                cartData[hasInfo.index].counts += counts;
+            }
+        }
+        wx.setStorageSync(this._storageKeyName ,cartData)  //更新本地缓存
+    }
+    /*
+   * 增加商品数目
+   * */
+    addCounts(id) {
+        this._changeCounts(id, 1);
+    };
+
+    /*
+    * 购物车减
+    * */
+    cutCounts(id) {
+        this._changeCounts(id, -1);
+    };
+    /**
+     * 删除
+     */
+    /*
+    * 删除某些商品
+    */
+    delete(ids) {
+        if (!(ids instanceof Array)) {
+            ids = [ids];
+        }
+        var cartData = this.getCartDataFromLocal();
+        for (let i = 0; i < ids.length; i++) {
+            var hasInfo = this._isHasThatOne(ids[i], cartData);
+            if (hasInfo.index != -1) {
+                cartData.splice(hasInfo.index, 1);  //删除数组某一项
+            }
+        }
+        wx.setStorageSync(this._storageKeyName, cartData)
+    }
+    execsetStorageSync(data){
+        wx.setStorageSync(this._storageKeyName, data)
+    }
 }
 
 export { Cart }

@@ -72,5 +72,10 @@ Page({
     }
     cart.add(tmpObj,this.data.productCount)
   },
+  onCartTap:function(event){
+      wx.switchTab({
+          url: '/page/cart/cart',
+      });
+  }
 
 })
