@@ -101,4 +101,12 @@ class Token {
         }
         return false;
     }
+
+    public static function verifyToken($token){
+        $exist = Cache::get($token);
+        if($exist){
+            return true;
+        }
+        return false;
+    }
 }

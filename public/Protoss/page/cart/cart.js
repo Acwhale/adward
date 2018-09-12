@@ -135,5 +135,13 @@ Page({
         this.data.cartData.splice(index,1);
         this._resetCartData();
         cart.delete(id);
+    },
+    /**
+     * 下单
+     */
+    submitOrder:function(e){
+        wx.navigateTo({
+            url: '../order/order?account='+this.data.account+'&from=cart',
+        })
     }
 })

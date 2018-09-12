@@ -5,7 +5,8 @@
     "page/theme/theme",
     "page/category/category",
     "page/cart/cart",
-    "page/my/my"
+    "page/my/my",
+    "page/order/order"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ab956d",

@@ -31,6 +31,9 @@ Route::get('api/:version/product/recent','api/:version.product/getRecent');
 
 Route::get('api/:version/category/all','api/:version.category/getAllCategories');
 
+
+
+Route::post('api/:version/token/verify','api/:version.token/verifyToken');
 Route::post('api/:version/token/user','api/:version.token/getToken');
 Route::post('api/:version/address','api/:version.address/createOrUpdateAddress');
 Route::post('api/:version/order','api/:version.order/placeOrder');
